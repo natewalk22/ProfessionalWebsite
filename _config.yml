@@ -19,7 +19,7 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "index.html", title = "Home"}
   - {file: "README.md", title = "Coursework"}
   - {file: "/resume.pdf", title = "Resume"}
-  - {file: "/CV.pdf", title = "CV"
+  - {file: "/CV.pdf", title = "CV"}
 
 external:                  # shows a footer with social links - for available icons see fontawesome.com/icons
   - {title: Mail, icon: envelope, url: "mailto:nathawa@siue.edu"}
