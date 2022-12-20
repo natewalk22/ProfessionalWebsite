@@ -1,99 +1,90 @@
 ---
-title: "About"
-permalink: "/about/"
+title: "Coursework"
+permalink: "/Coursework/"
 layout: page
+
+# Projects
+## Maps
+### Time Series Analysis
+![Bay_Area_Time_Series](Bay_Area_Time_Series.jpg)
 ---
-
-## Installation
-
-Just fork this [repository](https://github.com/niklasbuschmann/contrast) and adjust the `_config.yml` to use with [Github Pages](https://pages.github.com/) and your page is done.
-
-## Features
-
- - supports dark mode on macOS Mojave
- - optional sidebar
- - MathJax support
- - no external ressources
- - included archive page
- - supports pagination
- - feed generation
- - responsive
- - syntax highlighting
- - supports comments via [disqus](https://disqus.com/) or [isso](http://posativ.org/isso/)
-
-## Based on
-
-- [Hyde](https://github.com/poole/hyde)
-- [Minima](https://github.com/jekyll/minima)
-- [Lagrange](https://github.com/LeNPaul/Lagrange)
-- [Font Awesome](http://fontawesome.io/)
-- [KaTeX](https://katex.org/)
-- [Pygments](https://github.com/richleland/pygments-css)
-
-## Installation (jekyll-remote-theme method)
-
-You can use this theme with the `jekyll-remote-theme` plugin. Just create an empty repo, copy over the `index.html` file and add this to your `_config.yml`:
-
-```yaml
-remote_theme: niklasbuschmann/contrast@v2.11
-
-plugins:
-  - jekyll-remote-theme
+### Raster Interpolation
+![Chesapeake_Bay](Chesapeake_Bay.jpg)
+---
+### Cluster Analysis
+![Crashes](Crashes.jpg)
+---
+### Divy Bikes in Chicago Popularity Tessellation
+![Divy_Bike_Map](Divy_Bike_Map.jpg)
+---
+### R Data Preparation then QGIS Visualization
 ```
+library(tigris)
+library(sf)
+library(readr)
+library(dplyr)
+library(here)
+library(haffutils)
+library(e1071)
+install.packages("here")
+## retrieve geometry for tracts
+dane.tracts <- tracts(state = "55", county = "025")
 
-Note: to enable icons you also need to copy over the `_data` folder.
+## retrieve tabular data from web source
+df <- read_csv("https://gitlab.com/mhaffner/data/-/raw/master/dane-data.csv")
 
-## Config
+## create several new columns
+## column for z-scores for 2011 foreclosures
+df$z11 <- (df$FRCLS_11 - mean(df$FRCLS_11)) / sd_pop(df$FRCLS_11)
 
-Your `_config.yml` could for example look like this:
+## column for z-scores for 2012 foreclosures
+df$z12  <- (df$FRCLS_12 - mean(df$FRCLS_12)) / sd_pop(df$FRCLS_12)
 
-```yaml
-title: "Blog Title"
-author: "Blog Author"
-description: "My personal blog about ... something"
-permalink: /:title/
-lang: "en"
-excerpt_separator: "\n\n\n"
-date_format: "%B %d, %Y"
+## column for change in number of foreclosures from 2011 to 2012
+df$change <- df$FRCLS_12 - df$FRCLS_11
 
-# Layout
+## column for z-scores for change in foreclosures from 2011 to 2012
+df$zchange <- (df$change - mean(df$change)) / sd_pop(df$change)
 
-show_excerpts: true        # show article excerpts on the home page
-show_frame: true           # adds a gray frame to the site
-show_sidebar: false        # show a sidebar instead of the usual header
+## merge data
+dane.data <- merge(dane.tracts, df, by = "GEOID")
 
-# Menu
+## write data as a shapefile
+st_write(dane.data, "C:/Users/supah/Documents/GEOG370/data/danedata.shp", delete_layer = TRUE)
 
-navigation:                # accepts {file, title, url, icon, sidebaricon}
-  - {file: "index.html"}
-  - {file: "README.md"}
+#histogram of 2011 z-scores
+hist(df$z11, col = "Lavender", main = "Histogram of 2011 Foreclosure Z-scores", xlab = "2011 Foreclosure Z-scores")
+skewness(df$z11)
+kurtosis(df$z11)
 
-external:                  # shows a footer with social links - for available icons see fontawesome.com/icons
-  - {title: Mail, icon: envelope, url: "mailto:niklasbuschmann@users.noreply.github.com"}
-  - {title: Github, icon: github, url: "https://github.com/niklasbuschmann/contrast"}
-  - {title: Subscribe, icon: rss, url: "/feed.xml"}
+#histogram of 2012 z-scores
+hist(df$z12, col = "darkseagreen2", main = "Histogram of 2012 Foreclosure Z-scores", xlab = "2012 Foreclosure Z-scores")
+skewness(df$z12)
+kurtosis(df$z12)
 
-comments:
-#  disqus_shortname: ""    # see https://disqus.com/
-#  isso_domain: ""         # see https://posativ.org/isso/
-
-plugins:
- - jekyll-feed
-
+#histogram of change, along with some summarative statistics
+hist(df$zchange, col = "darkslategray4", main = "Histogram of Change in Z-scores from 2011-2012", xlab = "Change in Z-score")
+skewness(df$zchange)
+kurtosis(df$zchange)
+qnorm(.10, lower.tail = FALSE)
+sd_pop(df$FRCLS_12)
+mean(df$FRCLS_12)
 ```
-
-## MathJax
-
-Contrast comes preinstalled with a leightweight alternative to MathJax called [KaTeX](https://katex.org/). To display equations in a post simply set `mathjax: true` in the article's front matter.
-
-## License
-
-[public domain](http://unlicense.org/)
-
-## Screenshots
-
-![screenshot](https://user-images.githubusercontent.com/4943215/109431850-cd711780-7a08-11eb-8601-2763f2ee6bb4.png)
-
-![screenshot](https://user-images.githubusercontent.com/4943215/109431832-b6cac080-7a08-11eb-9c5e-a058680c23a1.png)
-
-![screenshot](https://user-images.githubusercontent.com/4943215/73125194-5f0b8b80-3fa4-11ea-805c-8387187503ad.png)
+![ForeclosureMap2](ForeclosureMap2.png)
+---
+## Adobe Illustrator Maps  
+![Africa_Coffee_Map1024_1](Africa_Coffee_Map1024_1.jpg)
+---
+## Research Papers  
+### Hobbit or “Kiwi:” Lord of the Rings Tourism, Sustainability, and National Identity
+[Tourism_Hobbit_Or_Kiwi.pdf](Tourism_Hobbit_Or_Kiwi.pdf)  
+### Vietnam National Instagram Content Analysis
+[Vietnam_Instagram_Analysis.pdf](Vietnam_Instagram_Analysis.pdf)
+### Nuclear Site Suitability Analysis for Wisconsin
+[NuclearCourseProject](NuclearCourseProject.docx)
+## Posters
+![188_Final_Poster](188_Final_Poster.png)  
+## Tutorials  
+[GeodatabaseTutorial.pdf](GeodatabaseTutorial.pdf) 
+## Field Seminar - Geographies of Community
+https://uwecgeographyfield.wixsite.com/community2021
