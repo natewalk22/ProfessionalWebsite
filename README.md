@@ -2,7 +2,7 @@
 title: "Coursework"
 permalink: "/Coursework/"
 layout: page
-
+---
 # Projects
 ## Maps
 ### Time Series Analysis
